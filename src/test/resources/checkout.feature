@@ -5,8 +5,8 @@ Feature:  Few products of the same type in shopping chart
   Scenario:
     Given I am on Amazon page
     And I go to best selling cameras
-    When I select position 5
-    And I add it to shopping chart in quantity of 8
+    When I select position 1
+    And I add it to shopping chart in quantity of 5
     And I go to checkout
     Then I should see proper product name on item list
     And I sould see proper final price

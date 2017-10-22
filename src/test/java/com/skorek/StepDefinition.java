@@ -10,9 +10,11 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.commons.lang3.SystemUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +31,24 @@ public class StepDefinition {
     private ProductPage productPage;
     private CheckoutPage checkoutPage;
 
+    private static void setUpWebdriverVariables() {
+        if (SystemUtils.IS_OS_LINUX) {
+            File f = new File("WebDriver/Linux/chromedriver");
+            System.setProperty("webdriver.chrome.driver", f.getAbsolutePath());
+        }
+        if (SystemUtils.IS_OS_WINDOWS) {
+            File f = new File("WebDriver/Windows/chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", f.getAbsolutePath());
+        }
+        if (SystemUtils.IS_OS_MAC) {
+            File f = new File("WebDriver/MacOS/chromedriver");
+            System.setProperty("webdriver.chrome.driver", f.getAbsolutePath());
+        }
+    }
+
     @Before
     public static void SetUp(){
+        setUpWebdriverVariables();
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }

@@ -1,5 +1,5 @@
 Feature:  Few products of the same type in shopping chart
-  User should be able to put multiple products into the shopping chart
+  User should be able to buy several pieces of one product
   User should see proper final price for multiple products
 
   Scenario:

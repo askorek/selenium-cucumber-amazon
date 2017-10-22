@@ -1,4 +1,4 @@
-package com.skorek;
+package com.skorek.PageObjects;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;

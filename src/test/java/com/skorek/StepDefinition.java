@@ -1,39 +1,32 @@
 package com.skorek;
 
+import com.skorek.PageObjects.CheckoutPage;
+import com.skorek.PageObjects.MainPage;
+import com.skorek.PageObjects.ProductPage;
+import com.skorek.PageObjects.ProductCategoryPage;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.RemoteWebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Currency;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
 
 public class StepDefinition {
     private static WebDriver driver;
-    String product_name;
-    Double product_price;
-    int number_of_products;
+    private String product_name;
+    private Double product_price;
+    private int number_of_products;
 
-    MainPage_PO mainPage;
-    ProductsPage_PO productsPage;
-    ProductPage_PO productPage;
-    ChartPage_PO chartPage;
+    private MainPage mainPage;
+    private ProductCategoryPage productCategoryPage;
+    private ProductPage productPage;
+    private CheckoutPage checkoutPage;
 
     @Before
     public static void SetUp(){
@@ -49,27 +42,26 @@ public class StepDefinition {
 
 
     @Given("^I am on Amazon page$")
-    public void i_am_on_Amazon_page() throws Throwable {
-//        driver = new ChromeDriver();
+    public void i_am_on_Amazon_page() {
         driver.get("http://www.amazon.com");
-        mainPage = new MainPage_PO(driver);
+        mainPage = new MainPage(driver);
     }
 
-    @Given("^I go to best selling cameras$")
-    public void i_go_to_best_selling_cameras() throws Throwable {
-
-        productsPage = mainPage.enterProductPage();
+    @And("^I go to category \"([^\"]*)\"$")
+    public void iGoToCategory(String category) {
+        productCategoryPage = mainPage.goToProductCategory(category);
     }
 
     @When("^I select position (\\d+)$")
-    public void i_select_position(int position) throws Throwable {
+    public void i_select_position(int position) {
 
-        productPage = productsPage.goToProductOnPosition(position);
+        productPage = productCategoryPage.goToProductOnPosition(position);
         product_price = productPage.getProductPrice();
+        product_name = productPage.getProductName();
     }
 
     @When("^I add it to shopping chart in quantity of (\\d+)$")
-    public void i_add_it_to_shopping_chart_in_quantity_of(int quantity) throws Throwable {
+    public void i_add_it_to_shopping_chart_in_quantity_of(int quantity) {
         number_of_products = quantity;
 
         productPage.setQuantity(quantity);
@@ -77,19 +69,19 @@ public class StepDefinition {
     }
 
     @When("^I go to checkout$")
-    public void i_go_to_checkout() throws Throwable {
-        chartPage = productPage.goToChart();
+    public void i_go_to_checkout() {
+        checkoutPage = productPage.goToCheckout();
     }
 
     @Then("^I should see proper product name on item list$")
-    public void i_should_see_proper_product_name_on_item_list() throws Throwable {
-        assert chartPage.driver.getPageSource().contains(product_name);
+    public void i_should_see_proper_product_name_on_item_list() {
+        assert checkoutPage.containsString(product_name);
     }
 
     @Then("^I sould see proper final price$")
-    public void i_sould_see_proper_final_price() throws Throwable {
+    public void i_sould_see_proper_final_price() {
 
-        assert abs(chartPage.getTotalPrice() - product_price*number_of_products) < 0.01;
+        assert abs(checkoutPage.getTotalPrice() - product_price*number_of_products) < 0.01;
         driver.close();
         driver.quit();
     }

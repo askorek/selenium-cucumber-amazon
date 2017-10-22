@@ -1,11 +1,11 @@
-package com.skorek;
+package com.skorek.PageObjects;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class ChartPage_PO extends PageObject {
-    public ChartPage_PO(WebDriver driver){
+public class CheckoutPage extends PageObject {
+    public CheckoutPage(WebDriver driver){
         super(driver);
     }
 
@@ -16,5 +16,9 @@ public class ChartPage_PO extends PageObject {
         String total_price_text = totalPriceElement.getText();
         total_price_text = total_price_text.replace("$", "").replace(",", "");
         return Double.parseDouble(total_price_text);
+    }
+
+    public boolean containsString(String product_name) {
+        return driver.getPageSource().contains(product_name);
     }
 }

@@ -1,6 +1,5 @@
-package com.skorek;
+package com.skorek.PageObjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,8 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ProductPage_PO extends PageObject {
-    public ProductPage_PO(WebDriver driver){
+public class ProductPage extends PageObject {
+    public ProductPage(WebDriver driver){
         super(driver);
     }
 
@@ -51,9 +50,9 @@ public class ProductPage_PO extends PageObject {
         noCoverangeButton.click();
     }
 
-    public ChartPage_PO goToChart(){
+    public CheckoutPage goToCheckout(){
         driver.get("https://www.amazon.com/gp/cart/view.html/ref=nav_cart");
-        return new ChartPage_PO(driver);
+        return new CheckoutPage(driver);
     }
 
 

@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+
 public class MainPage_PO extends PageObject {
 
     public MainPage_PO(WebDriver driver){
@@ -11,10 +13,10 @@ public class MainPage_PO extends PageObject {
     }
 
     @FindBy(xpath = "//*[contains(@id,\"uber-widget-ns\")]/div[1]/span/a")
-    private WebElement bestSellingCameras;
+    private List<WebElement> bestSellingCameras;
 
     public ProductsPage_PO enterProductPage(){
-        this.bestSellingCameras.click();
+        bestSellingCameras.get(1).click();
         return new ProductsPage_PO(driver);
     }
 }

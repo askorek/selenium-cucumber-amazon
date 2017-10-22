@@ -1,10 +1,12 @@
 # selenium-cucumber-amazon
 Recuirement task
 
-preconditions:
+## preconditions:
 1. Maven is installed and configured in PATH
 2. ChromeDriver is accesible through PATH
 
-# running tests:
+## running tests:
 git clone project
+```
 mvn clean test -Dtest=com.skorek.RunJunit
+```

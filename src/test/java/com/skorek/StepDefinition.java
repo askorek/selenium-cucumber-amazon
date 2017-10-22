@@ -4,6 +4,7 @@ import com.skorek.PageObjects.CheckoutPage;
 import com.skorek.PageObjects.MainPage;
 import com.skorek.PageObjects.ProductPage;
 import com.skorek.PageObjects.ProductCategoryPage;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -11,6 +12,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.commons.lang3.SystemUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -54,7 +57,15 @@ public class StepDefinition {
     }
 
     @After
-    public static void cleanUp(){
+    public static void cleanUp(Scenario scenario){
+
+        if (scenario.isFailed()) {
+            scenario.embed(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES), "image/png");
+            scenario.write("Test failed");
+        }else{
+            scenario.write("Test passed");
+        }
+
         driver.close();
         driver.quit();
     }

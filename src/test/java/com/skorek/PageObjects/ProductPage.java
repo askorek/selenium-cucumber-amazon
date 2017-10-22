@@ -50,8 +50,9 @@ public class ProductPage extends PageObject {
         quantitySelect.selectByValue(Integer.toString(quantity));
     }
 
-    public void clickAddToChartAndDeclineCoverage()  {
+    public void clickAddToChartAndDeclineCoverage() throws InterruptedException {
         addToChartButton.click();
+        Thread.sleep(1000);  //ugly hack but nothing reasonable works
         WebDriverWait wait = new WebDriverWait(driver, 3);
         try {
             wait.until(ExpectedConditions.visibilityOf(noCoverangeButton));

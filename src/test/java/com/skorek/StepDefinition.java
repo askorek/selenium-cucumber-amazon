@@ -62,7 +62,7 @@ public class StepDefinition {
     }
 
     @When("^I add it to shopping chart in quantity of (\\d+)$")
-    public void i_add_it_to_shopping_chart_in_quantity_of(int quantity) {
+    public void i_add_it_to_shopping_chart_in_quantity_of(int quantity) throws InterruptedException {
         number_of_products = quantity;
 
         productPage.setQuantity(quantity);

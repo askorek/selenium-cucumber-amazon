@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.math.BigDecimal;
+
 public class CheckoutPage extends PageObject {
     public CheckoutPage(WebDriver driver){
         super(driver);
@@ -12,10 +14,11 @@ public class CheckoutPage extends PageObject {
     @FindBy(xpath = "//*[@id=\"sc-subtotal-amount-activecart\"]/span")
     private WebElement totalPriceElement;
 
-    public double getTotalPrice(){
+    public BigDecimal getTotalPrice(){
         String total_price_text = totalPriceElement.getText();
         total_price_text = total_price_text.replace("$", "").replace(",", "");
-        return Double.parseDouble(total_price_text);
+        Double total_price_in_double = Double.parseDouble(total_price_text);
+        return new BigDecimal(total_price_in_double).setScale(2);
     }
 
     public boolean containsString(String product_name) {

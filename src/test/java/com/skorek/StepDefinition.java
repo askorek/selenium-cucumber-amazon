@@ -4,7 +4,6 @@ import com.skorek.PageObjects.CheckoutPage;
 import com.skorek.PageObjects.MainPage;
 import com.skorek.PageObjects.ProductPage;
 import com.skorek.PageObjects.ProductCategoryPage;
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -13,6 +12,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
@@ -20,7 +21,7 @@ import static java.lang.Math.abs;
 public class StepDefinition {
     private static WebDriver driver;
     private String product_name;
-    private Double product_price;
+    private BigDecimal product_price;
     private int number_of_products;
 
     private MainPage mainPage;
@@ -81,7 +82,7 @@ public class StepDefinition {
     @Then("^I sould see proper final price$")
     public void i_sould_see_proper_final_price() {
 
-        assert abs(checkoutPage.getTotalPrice() - product_price*number_of_products) < 0.01;
+        assert product_price.multiply(new BigDecimal(number_of_products)).subtract(checkoutPage.getTotalPrice()) == BigDecimal.ZERO;
         driver.close();
         driver.quit();
     }

@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.math.BigDecimal;
+
 public class ProductPage extends PageObject {
     public ProductPage(WebDriver driver){
         super(driver);
@@ -32,10 +34,11 @@ public class ProductPage extends PageObject {
         return productNameElement.getText();
     }
 
-    public double getProductPrice(){
+    public BigDecimal getProductPrice(){
         String product_price_text = productPriceElement.getText();
         product_price_text = product_price_text.replace("$", "").replace(",", "");
-        return Double.parseDouble(product_price_text);
+        Double priceInDouble = Double.parseDouble(product_price_text);
+        return new BigDecimal(priceInDouble).setScale(2);
     }
 
     public void setQuantity(int quantity){

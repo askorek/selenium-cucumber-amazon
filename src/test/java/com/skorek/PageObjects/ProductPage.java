@@ -1,6 +1,8 @@
 package com.skorek.PageObjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -29,6 +31,8 @@ public class ProductPage extends PageObject {
     @FindBy(xpath = "//*[@id=\"siNoCoverage-announce\"]")
     private WebElement noCoverangeButton;
 
+    @FindBy(xpath = "//a[@id=\"hlb-ptc-btn-native\"]")
+    private WebElement proceedToCheckoutButton;
 
     public String getProductName(){
         return productNameElement.getText();
@@ -46,12 +50,18 @@ public class ProductPage extends PageObject {
         quantitySelect.selectByValue(Integer.toString(quantity));
     }
 
-    public void clickAddToChartAndDeclineCoverage(){
+    public void clickAddToChartAndDeclineCoverage()  {
         addToChartButton.click();
         WebDriverWait wait = new WebDriverWait(driver, 3);
-        wait.until(ExpectedConditions.visibilityOf(noCoverangeButton));
-        noCoverangeButton.click();
-    }
+        try {
+            wait.until(ExpectedConditions.visibilityOf(noCoverangeButton));
+            noCoverangeButton.click();
+        }
+        catch (org.openqa.selenium.TimeoutException e){
+            driver.findElement(By.xpath("//*[@id=\"a-popover-6\"]/div/div[1]/button")).click();
+        }
+        wait.until(ExpectedConditions.visibilityOf(proceedToCheckoutButton));
+            }
 
     public CheckoutPage goToCheckout(){
         driver.get("https://www.amazon.com/gp/cart/view.html/ref=nav_cart");

@@ -70,7 +70,7 @@ public class StepDefinition {
     }
 
     @When("^I go to checkout$")
-    public void i_go_to_checkout() {
+    public void i_go_to_checkout()  {
         checkoutPage = productPage.goToCheckout();
     }
 
@@ -82,8 +82,9 @@ public class StepDefinition {
     @Then("^I sould see proper final price$")
     public void i_sould_see_proper_final_price() {
 
-        assert product_price.multiply(new BigDecimal(number_of_products)).subtract(checkoutPage.getTotalPrice()) == BigDecimal.ZERO;
-        driver.close();
-        driver.quit();
+        BigDecimal multiply_price = product_price.multiply(new BigDecimal(number_of_products));
+        BigDecimal checkoutPrice = checkoutPage.getTotalPrice();
+
+        assert multiply_price.compareTo(checkoutPrice) == 0;
     }
 }
